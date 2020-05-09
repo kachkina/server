@@ -14,7 +14,6 @@ process.on('uncaughtException', error => {
   return false;
 });
 
-// app.use(`/${process.env.BOOK_PATH_PREFIX}`, express.static(path.join(__dirname, `../${process.env.BOOK_PATH_PREFIX}`)));
 app.use(bodyParser.json({ limit: '15mb' }));
 app.use(timeout('600s'));
 
