@@ -5,8 +5,9 @@ const { Schema } = mongoose;
 
 const wordSchema = new Schema({
   text: { type: String },
-  type: { type: String },
+  type: { type: String, enum: ['entered', 'dictionary'] },
+  user: { type:Schema.Types.ObjectId, ref: 'User' },
 });
 
 
-module.exports = mongoose.model('Words', wordSchema, 'words');
+module.exports = mongoose.model('Word', wordSchema, 'words');

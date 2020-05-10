@@ -3,9 +3,10 @@ const { ObjectID } = require('mongodb');
 const WordModel = require('../models/word');
 
 const addWord = async (req, res, next) => {
+  const { user } = req.session;
   const { text } = req.body;
   try {
-    const word = new WordModel({ type: 'entered', text })
+    const word = new WordModel({ type: 'entered', text, user: new ObjectID(user.id) })
     const savedWord = await word.save();
     res.send({
       error: false, data: savedWord
@@ -16,10 +17,12 @@ const addWord = async (req, res, next) => {
 };
 
 const updateWord = async (req, res, next) => {
+  const { user } = req.session;
+
   const { text, _id, type } = req.body;
   try {
     const wordForUpdate = await WordModel.findById(new ObjectID(_id));
-    if (!wordForUpdate) {
+    if (!wordForUpdate && wordForUpdate.user.toString() === user.id.toString()) {
       throw new Error('Not found')
     }
 
@@ -35,9 +38,10 @@ const updateWord = async (req, res, next) => {
 };
 
 const getWords = async (req, res, next) => {
+  const { user } = req.session;
   const { type, limit } = req.query;
   try {
-    const words = await WordModel.find({ type }).limit(+limit);
+    const words = await WordModel.find({ type, user: new ObjectID(user.id) }).limit(+limit);
     res.send({
       error: false, data: words
     });
