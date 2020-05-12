@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { ObjectID } = require('mongodb')
 const {
   verifyPassword,
   hashPassword,
@@ -8,7 +9,6 @@ const CustomError = require('../utils/error');
 
 const register = async (req, res, next) => {
   const params = req.body;
-  console.log(params)
   try {
     const user = await UserModel.findOne({ email: params.email }, '_id state name')
       .catch(err => { console.error(`${methodName} - Mongodb error: ${err}`); throw err; });
@@ -59,7 +59,7 @@ const login = async (req, res, next) => {
     };
     const expireTime = 30 * 86400;
 
-    const token = jwt.sign(payload, 'secret', { expiresIn: expireTime });
+    const token = jwt.sign(payload, '1234', { expiresIn: expireTime });
     user.token = token;
     req.session.user = {
       id: user._id,

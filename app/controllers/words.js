@@ -25,10 +25,14 @@ const updateWord = async (req, res, next) => {
     if (!wordForUpdate && wordForUpdate.user.toString() === user.id.toString()) {
       throw new Error('Not found')
     }
-
-    wordForUpdate.text = text;
+    if (text) {
+      wordForUpdate.text = text;
+    }
+    
     wordForUpdate.type = type;
-    const updatedWord = wordForUpdate.save();
+    const updatedWord = await wordForUpdate.save();
+    updatedWord.id = updatedWord._id;
+    delete updatedWord._id;
     res.send({
       error: false, data: updatedWord
     });
@@ -39,9 +43,9 @@ const updateWord = async (req, res, next) => {
 
 const getWords = async (req, res, next) => {
   const { user } = req.session;
-  const { type, limit } = req.query;
+  const { type } = req.query;
   try {
-    const words = await WordModel.find({ type, user: new ObjectID(user.id) }).limit(+limit);
+    const words = await WordModel.find({ type, user: new ObjectID(user.id) });
     res.send({
       error: false, data: words
     });

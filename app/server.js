@@ -38,21 +38,21 @@ client.on('error', (err) => {
 app.use(cors({
   origin: (origin, callback) => {
     callback(null, true);
-  }
+  },
+  credentials: true,
 }))
 
 app.use(bodyParser.json({ limit: '15mb' }));
 app.use(cookieParser());
 
 app.use(session({
-  secret: 'secret',
+  secret: '1234',
   name: 'sessionId',
   cookie: {
     secure: false,
     httpOnly: true,
     path: '/',
     maxAge:  30 * 86400,
-    sameSite: true,
   },
   store: new RedisStore({ host: redisHost, port: redisPort, client }),
   saveUninitialized: false,

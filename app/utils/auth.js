@@ -4,13 +4,12 @@ const CustomError = require('./error');
 
 const authMiddleware = async (req, res, next) => {
   const { user } = req.session;
-  console.log(req.session)
   try {
     if (!user || !user.token) {
       throw new CustomError('Not Authorized', 401, 0);
     } else if (user && user.token) {
       await new Promise((resolve, reject) => {
-        jwt.verify(user.token, 'secret', (err) => {
+        jwt.verify(user.token, '1234', (err) => {
           if (err) {
             return req.session.destroy((error) => {
               if (error) {
