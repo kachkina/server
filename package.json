@@ -23,7 +23,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.1.10",
     "mongoose": "^5.4.11",
-    "redis": "^2.8.0",
+    "redis": "^3.1.1",
     "universal-cookie": "^4.0.3",
     "universal-cookie-express": "^4.0.3"
   },
